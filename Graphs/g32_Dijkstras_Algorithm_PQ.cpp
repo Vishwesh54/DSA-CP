@@ -4,20 +4,22 @@ using namespace std;
 
 vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
 {
+    // Create a priority queue for storing the nodes as a pair {dis,node}
+    // where dis is the distance from source to the node. 
     priority_queue<pair<int,int> ,vector<pair<int,int>> ,greater<pair<int,int>>> pq;
     vector<int> dist(V,1e7);
     dist[S]=0;
-    pq.push({S,0});
+    pq.push({0,S});     // dis ko samne rakhna hai taaki har baar shortest aaye 
 
     while(!pq.empty()){
-        auto [node , dis] = pq.top();
+        auto [dis , node] = pq.top();
         pq.pop();
 
         for(auto it:adj[node]){
             int adjnode = it[0] ,wt=it[1];
             if(wt+dis<dist[adjnode]){
                 dist[adjnode] = wt + dis;
-                pq.push({adjnode , dist[adjnode]}); 
+                pq.push({dist[adjnode] , adjnode}); 
             }
         }
     }
